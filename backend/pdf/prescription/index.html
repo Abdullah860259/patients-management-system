@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Prescription</title>
+
+
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =====================================================
+   GLOBAL RESET
+===================================================== */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background: #ececec;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            padding: 0px;
+        }
+
+
+        /* =====================================================
+   A4 PAGE
+===================================================== */
+
+        .page {
+
+            width: 210mm;
+            min-height: 297mm;
+
+            margin: auto;
+
+            background: #fff;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+
+        }
+
+
+        /* =====================================================
+   HEADER
+===================================================== */
+
+        .header {
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 30px 45px 15px;
+
+            position: relative;
+
+            z-index: 10;
+
+        }
+
+
+        /* =====================================================
+   LOGO
+===================================================== */
+
+        .logo-wrapper {
+
+            width: 120px;
+
+            margin-right: 25px;
+
+        }
+
+        .logo-circle {
+
+            width: 110px;
+
+            height: 110px;
+
+            border-radius: 50%;
+
+            border: 6px solid #b52328;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: white;
+
+            color: #b52328;
+
+            font-weight: 700;
+
+            font-size: 20px;
+
+        }
+
+
+        /* =====================================================
+   CLINIC INFO
+===================================================== */
+
+        .clinic-details {
+
+            flex: 1;
+
+        }
+
+        .clinic-details h1 {
+
+            color: #b52328;
+
+            font-size: 34px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+        .clinic-info {
+
+            font-size: 14px;
+
+            color: #555;
+
+            line-height: 24px;
+
+        }
+
+
+        /* =====================================================
+   TOP DECORATION
+===================================================== */
+
+        .top-shape {
+
+            position: absolute;
+
+            top: -140px;
+
+            right: -120px;
+
+            width: 520px;
+
+            height: 280px;
+
+            background: #b52328;
+
+            border-radius: 0 0 0 100%;
+
+            transform: rotate(-4deg);
+
+        }
+
+        .top-shape::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: 35px;
+
+            left: -70px;
+
+            width: 450px;
+
+            height: 220px;
+
+            border: 3px solid white;
+
+            border-right: none;
+
+            border-top: none;
+
+            border-radius: 0 0 0 100%;
+
+        }
+
+
+        /* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+        .content {
+
+            display: flex;
+
+            gap: 30px;
+
+            padding: 30px 40px 40px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* =====================================================
+   LEFT PANEL
+===================================================== */
+
+        .patient-card {
+
+            width: 270px;
+
+            border: 2px solid #b52328;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            background: white;
+
+        }
+
+
+        .patient-title {
+
+            background: #b52328;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 15px;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+        }
+
+
+        .field {
+
+            padding: 10px 18px;
+
+        }
+
+        .field label {
+
+            display: block;
+
+            font-size: 13px;
+
+            color: #777;
+
+            margin-bottom: 3px;
+
+        }
+
+        .line {
+
+            border-bottom: 1px solid #999;
+            padding-bottom: 23px;
+            height: 20px;
+
+        }
+
+
+        /* =====================================================
+   NOTES
+===================================================== */
+
+        .notes {
+
+            padding: 18px;
+
+        }
+
+        .notes h4 {
+
+            color: #b52328;
+
+            margin-bottom: 10px;
+
+            font-size: 15px;
+
+        }
+
+        .notes p {
+
+            font-size: 13px;
+
+            line-height: 22px;
+
+            color: #666;
+
+        }
+
+
+        /* =====================================================
+   PRESCRIPTION PANEL
+===================================================== */
+
+        .prescription-area {
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        /* =====================================================
+   RX HEADER
+===================================================== */
+
+        .rx-header {
+
+            display: flex;
+
+            align-items: center;
+
+            margin-bottom: 35px;
+
+        }
+
+        .rx-symbol {
+
+            font-size: 70px;
+
+            color: #b52328;
+
+            font-weight: 700;
+
+            margin-right: 20px;
+
+        }
+
+        .doctor-details h2 {
+
+            font-size: 30px;
+
+            color: #b52328;
+
+        }
+
+        .doctor-details p {
+
+            margin-top: 5px;
+
+            color: #666;
+
+        }
+
+
+        /* =====================================================
+   WRITING AREA
+===================================================== */
+
+        .writing-area {
+
+            flex: 1;
+
+        }
+
+        .write-line {
+
+            height: 36px;
+
+            border-bottom: 1px solid #d6d6d6;
+
+        }
+
+
+        /* =====================================================
+   SIGNATURE
+===================================================== */
+
+        .signature-section {
+
+            margin-top: 60px;
+
+            width: 280px;
+
+            margin-left: auto;
+
+            text-align: center;
+
+        }
+
+        .signature-line {
+
+            border-bottom: 2px solid #444;
+
+            margin-bottom: 10px;
+
+        }
+
+        .signature-section span {
+
+            font-size: 14px;
+
+            color: #555;
+
+        }
+
+
+        /* =====================================================
+   FOOTER
+===================================================== */
+
+        footer {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 40px;
+
+            border-top: 2px solid #b52328;
+
+        }
+
+        .footer-left,
+        .footer-center {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+        .icon {
+
+            width: 30px;
+
+            height: 30px;
+
+            border-radius: 50%;
+
+            background: #b52328;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        .qr-box {
+
+            width: 90px;
+
+            height: 90px;
+
+            border: 2px solid #333;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 600;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- ================= HEADER ================= -->
+
+        <header class="header">
+
+            <div class="logo-wrapper">
+                <div class="logo-circle">
+                    <span>LOGO</span>
+                </div>
+            </div>
+
+            <div class="clinic-details">
+
+                <h1>Clinic Name</h1>
+
+                <div class="clinic-info">
+
+                    <div class="contact">
+                        <span>Mon to Friday (9am – 11am)</span>
+                    </div>
+
+                    <div class="phone">
+                        123-456-7890 &nbsp;&nbsp; | &nbsp;&nbsp; 444-666-8899
+                    </div>
+
+                    <div class="address">
+                        Street Address Here, City, State, Zip Code
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Decorative top border -->
+
+        <div class="top-shape"></div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content">
+
+
+            <!-- LEFT PANEL -->
+
+            <aside class="patient-card">
+
+                <div class="patient-title">
+                    Patient Information
+                </div>
+
+
+                <div class="field">
+                    <label>Name</label>
+                    <div class="line">{{name}}</div>
+                </div>
+
+                <div class="field">
+                    <label>Age</label>
+                    <div class="line">{{age}}</div>
+                </div>
+
+                <div class="field">
+                    <label>Sex</label>
+                    <div class="line">{{sex}}</div>
+                </div>
+
+                <div class="field">
+                    <label>Date</label>
+                    <div class="line">{{date}}</div>
+                </div>
+
+
+                <div class="field">
+                    <label>Admin Name</label>
+                    <div class="line">{{adminName}}</div>
+                </div>
+
+                <div class="field">
+                    <label>Admin Email</label>
+                    <div class="line">{{adminEmail}}</div>
+                </div>
+
+
+                <div class="field">
+                    <label>Patient Email</label>
+                    <div class="line">{{patientEmail}}</div>
+                </div>
+
+                <div class="notes">
+
+                    <h4>NOTE</h4>
+
+                    <p>
+                        The default password for the patient account
+                        is the patient's phone number.
+                    </p>
+
+                </div>
+
+            </aside>
+
+
+
+            <!-- RIGHT PANEL -->
+
+            <main class="prescription-area">
+
+                <div class="rx-header">
+
+                    <div class="rx-symbol">
+                        ℞
+                    </div>
+
+                    <div class="doctor-details">
+
+                        <h2>Prescription</h2>
+
+                        <p>
+                            Doctor's instructions and prescribed medicines.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="writing-area">
+
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+
+                </div>
+
+
+                <div class="signature-section">
+
+                    <div class="signature-line"></div>
+
+                    <span>Doctor Signature</span>
+
+                </div>
+
+            </main>
+
+        </section>
+
+
+
+        <!-- Bottom Decoration -->
+
+        <div class="bottom-shape"></div>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <div class="footer-left">
+
+                <div class="icon">☎</div>
+
+                <span>123-456-7890</span>
+
+            </div>
+
+
+            <div class="footer-center">
+
+                <div class="icon">✉</div>
+
+                <span>admin@email.com</span>
+
+            </div>
+
+
+            <div class="footer-right">
+
+                <div class="qr-box">
+
+                    QR
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
