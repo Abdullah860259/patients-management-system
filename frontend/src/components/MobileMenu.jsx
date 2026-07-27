@@ -35,7 +35,7 @@ export default function MobileMenu({ navLinks, user, isActive, onClose, onLogout
       ) : (
         <div className="px-4 py-3 space-y-2">
           <Link to="/login" onClick={onClose} className="block text-center py-2 text-sm font-medium text-cyan-600 border border-cyan-600 rounded-lg">Login</Link>
-          <Link to="/register" onClick={onClose} className="block text-center py-2 text-sm font-medium text-white bg-cyan-600 rounded-lg">Register</Link>
+
         </div>
       )}
     </div>

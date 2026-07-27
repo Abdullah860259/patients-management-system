@@ -178,9 +178,7 @@ export default function Navbar() {
           <Link to="/login" className={`block ${collapsed ? 'p-2' : 'py-2 px-4'} text-sm font-medium text-cyan-600 border border-cyan-600 rounded-lg hover:bg-cyan-50`}>
             {collapsed ? 'L' : 'Login'}
           </Link>
-          <Link to="/register" className={`block ${collapsed ? 'p-2' : 'py-2 px-4'} text-sm font-medium text-white bg-cyan-600 rounded-lg hover:bg-cyan-700`}>
-            {collapsed ? 'R' : 'Register'}
-          </Link>
+
         </div>
       )}
       <div className="border-t border-gray-100 p-3 text-center hidden md:block">

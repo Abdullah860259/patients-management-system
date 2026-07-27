@@ -7,7 +7,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PatientProfile from './pages/PatientProfile';
 import AdminDashboard from './pages/AdminDashboard';
@@ -46,7 +45,7 @@ export default function App() {
   const dispatch = useDispatch();
   const { token } = useSelector((s) => s.auth);
   const location = useLocation();
-  const hideNav = ['/', '/login', '/register'].includes(location.pathname);
+  const hideNav = ['/', '/login'].includes(location.pathname);
 
   useEffect(() => {
     if (token) dispatch(fetchMe());
@@ -64,7 +63,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
           <Route path="/patient/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/patient/treatments" element={<ProtectedRoute><Treatments /></ProtectedRoute>} />
           <Route path="/patient/payments" element={<ProtectedRoute><Payments /></ProtectedRoute>} />

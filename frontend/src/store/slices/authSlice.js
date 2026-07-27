@@ -15,16 +15,6 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
   }
 });
 
-export const register = createAsyncThunk('auth/register', async (userData, { rejectWithValue }) => {
-  try {
-    const res = await API.post('/auth/register', userData);
-    localStorage.setItem('token', res.data.token);
-    return res.data;
-  } catch (err) {
-    return rejectWithValue(err.response?.data || { message: 'Registration failed' });
-  }
-});
-
 export const fetchMe = createAsyncThunk('auth/fetchMe', async (_, { rejectWithValue }) => {
   try {
     const res = await API.get('/auth/me');
@@ -76,9 +66,6 @@ const authSlice = createSlice({
       .addCase(login.pending, (s) => { s.loading = true; s.error = null; })
       .addCase(login.fulfilled, (s, a) => { s.loading = false; s.user = a.payload.user; s.token = a.payload.token; })
       .addCase(login.rejected, (s, a) => { s.loading = false; s.error = a.payload?.message; })
-      .addCase(register.pending, (s) => { s.loading = true; s.error = null; })
-      .addCase(register.fulfilled, (s, a) => { s.loading = false; s.user = a.payload.user; s.token = a.payload.token; })
-      .addCase(register.rejected, (s, a) => { s.loading = false; s.error = a.payload?.message; })
       .addCase(fetchMe.pending, (s) => { s.loading = true; })
       .addCase(fetchMe.fulfilled, (s, a) => { s.loading = false; s.user = a.payload.user; })
       .addCase(fetchMe.rejected, (s) => { s.loading = false; s.user = null; s.token = null; localStorage.removeItem('token'); })

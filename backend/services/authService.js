@@ -8,10 +8,6 @@ const findUserById = async (id) => {
   return User.findById(id);
 };
 
-const createUser = async (data) => {
-  return User.create(data);
-};
-
 const updateUserById = async (id, data) => {
   return User.findByIdAndUpdate(id, data, { new: true, runValidators: true });
 };
@@ -27,7 +23,6 @@ const changeUserPassword = async (id, newPassword) => {
 module.exports = {
   findUserByEmail,
   findUserById,
-  createUser,
   updateUserById,
   changeUserPassword
 };

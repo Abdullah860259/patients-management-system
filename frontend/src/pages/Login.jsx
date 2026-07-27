@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, clearError } from '../store/slices/authSlice';
 import toast from 'react-hot-toast';
@@ -62,7 +62,7 @@ export default function Login() {
             </button>
           </form>
           <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">Don't have an account? <Link to="/register" className="text-cyan-600 font-semibold hover:text-cyan-700">Register here</Link></p>
+            <p className="text-gray-600 text-sm">Authorized personnel only</p>
           </div>
         </div>
       </div>

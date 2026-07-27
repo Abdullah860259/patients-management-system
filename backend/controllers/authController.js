@@ -23,30 +23,6 @@ const sendTokenResponse = (user, res, statusCode) => {
   });
 };
 
-exports.register = async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
-    }
-
-    const { firstName, lastName, email, password, phone, dateOfBirth, gender, address, emergencyContact } = req.body;
-
-    const existing = await authService.findUserByEmail(email);
-    if (existing) {
-      return res.status(400).json({ success: false, message: 'User already exists with this email' });
-    }
-
-    const user = await authService.createUser({
-      firstName, lastName, email, password, phone, dateOfBirth, gender, address, emergencyContact
-    });
-
-    sendTokenResponse(user, res, 201);
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Server error', error: err.message });
-  }
-};
-
 exports.login = async (req, res) => {
   try {
     const errors = validationResult(req);
