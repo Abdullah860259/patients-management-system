@@ -11,7 +11,9 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 
 app.use(cors({
-  origin:'https://patients-management-system-production-51bf.up.railway.app',
+  origin: ['https://patients-management-system-production-51bf.up.railway.app',
+    'http://localhost:3000',
+    'https://patients-management-system-abdullah.vercel.app'],
   credentials: true
 }));
 app.use(express.json());
