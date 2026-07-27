@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchAdminDashboard } from '../store/slices/adminSlice';
 import AdminStatsCards from '../components/admin/AdminStatsCards';
@@ -8,14 +8,15 @@ import AdminQuickActions from '../components/admin/AdminQuickActions';
 
 export default function AdminDashboard() {
   const { user } = useSelector((s) => s.auth);
-  const { dashboard, loading } = useSelector((s) => s.admin);
+  const { dashboard } = useSelector((s) => s.admin);
   const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchAdminDashboard());
+    dispatch(fetchAdminDashboard()).then(() => setLoaded(true));
   }, [dispatch]);
 
-  if (loading && !dashboard) {
+  if (!loaded) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600" />

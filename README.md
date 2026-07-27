@@ -4,6 +4,8 @@ A full-stack web application for managing dental clinic operations including pat
 
 ---
 
+LIVE URL : https://patients-management-system-abdullah.vercel.app/
+
 ## Tech Stack
 
 | Layer      | Technology                                          |

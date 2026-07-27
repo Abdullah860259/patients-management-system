@@ -14,6 +14,7 @@ export default function Payments() {
   const { items: patientItems, totalPages: ptPages, currentPage: ptPage, stats, loading: ptLoading } = useSelector((s) => s.payments);
   const { payments: adminData, loading: adLoading } = useSelector((s) => s.admin);
   const isAdmin = user?.role === 'admin' || user?.role === 'ceo';
+  const [loaded, setLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -31,15 +32,14 @@ export default function Payments() {
 
   useEffect(() => {
     if (isAdmin) {
-      dispatch(fetchAllPayments({ page }));
+      dispatch(fetchAllPayments({ page })).then(() => setLoaded(true));
     } else {
-      dispatch(fetchPayments({ page }));
+      Promise.all([
+        dispatch(fetchPayments({ page })),
+        dispatch(fetchPaymentStats())
+      ]).then(() => setLoaded(true));
     }
   }, [dispatch, page, isAdmin]);
-
-  useEffect(() => {
-    if (!isAdmin) dispatch(fetchPaymentStats());
-  }, [dispatch, isAdmin]);
 
   const openCreateModal = async () => {
     setShowModal(true);
@@ -77,6 +77,14 @@ export default function Payments() {
     }
   };
 
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
@@ -104,7 +112,7 @@ export default function Payments() {
 
       {loading ? (
         <div className="min-h-[40vh] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
         </div>
       ) : items?.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">

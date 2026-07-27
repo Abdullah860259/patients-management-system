@@ -7,11 +7,12 @@ import PatientProfileModal from '../components/admin/PatientProfileModal';
 
 export default function AdminPatients() {
   const { user } = useSelector((s) => s.auth);
-  const { patients } = useSelector((s) => s.admin);
+  const { patients, loading } = useSelector((s) => s.admin);
   const dispatch = useDispatch();
   const isAdmin = user?.role === 'admin' || user?.role === 'ceo';
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [loaded, setLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', dateOfBirth: '', gender: 'male' });
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -19,13 +20,13 @@ export default function AdminPatients() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setPage(1);
-      dispatch(fetchAllPatients({ search, page: 1 }));
+      dispatch(fetchAllPatients({ search, page: 1 })).then(() => setLoaded(true));
     }, 400);
     return () => clearTimeout(timer);
   }, [search, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAllPatients({ search, page }));
+    dispatch(fetchAllPatients({ search, page })).then(() => setLoaded(true));
   }, [page, dispatch]);
 
   const handleCreatePatient = async (e) => {
@@ -41,6 +42,14 @@ export default function AdminPatients() {
       toast.error(res.payload?.message || 'Failed to create patient');
     }
   };
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

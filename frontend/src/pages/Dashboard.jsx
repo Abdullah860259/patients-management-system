@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTreatmentStats } from '../store/slices/treatmentSlice';
 import { fetchPaymentStats } from '../store/slices/paymentSlice';
@@ -10,11 +10,23 @@ export default function Dashboard() {
   const { stats } = useSelector((s) => s.treatments);
   const { stats: paymentStats } = useSelector((s) => s.payments);
   const dispatch = useDispatch();
-  console.log(stats,"from dashboard")
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
-    dispatch(fetchTreatmentStats());
-    dispatch(fetchPaymentStats());
+    Promise.all([
+      dispatch(fetchTreatmentStats()),
+      dispatch(fetchPaymentStats())
+    ]).then(() => setLoaded(true));
   }, [dispatch]);
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">

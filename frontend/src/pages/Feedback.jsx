@@ -12,6 +12,7 @@ export default function Feedback() {
   const { items: patientItems, totalPages: ptPages, stats, loading: ptLoading } = useSelector((s) => s.feedback);
   const { feedbacks: adminData, loading: adLoading } = useSelector((s) => s.admin);
   const isAdmin = user?.role === 'admin' || user?.role === 'ceo';
+  const [loaded, setLoaded] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState(1);
@@ -24,15 +25,14 @@ export default function Feedback() {
 
   useEffect(() => {
     if (isAdmin) {
-      dispatch(fetchAllFeedbacks({ status: filter, page }));
+      dispatch(fetchAllFeedbacks({ status: filter, page })).then(() => setLoaded(true));
     } else {
-      dispatch(fetchFeedbacks({ status: filter, page }));
+      Promise.all([
+        dispatch(fetchFeedbacks({ status: filter, page })),
+        dispatch(fetchFeedbackStats())
+      ]).then(() => setLoaded(true));
     }
   }, [dispatch, filter, page, isAdmin]);
-
-  useEffect(() => {
-    if (!isAdmin) dispatch(fetchFeedbackStats());
-  }, [dispatch, isAdmin]);
 
   const handleRespond = async (fbId) => {
     const msg = respondText[fbId]?.trim();
@@ -52,6 +52,14 @@ export default function Feedback() {
     };
     return map[status] || 'bg-gray-100 text-gray-700';
   };
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -94,7 +102,7 @@ export default function Feedback() {
 
       {loading ? (
         <div className="min-h-[40vh] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
         </div>
       ) : items?.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">

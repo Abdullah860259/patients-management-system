@@ -6,19 +6,20 @@ import toast from 'react-hot-toast';
 
 export default function AdminManagement() {
   const dispatch = useDispatch();
-  const { admins } = useSelector((s) => s.admin);
+  const { admins, loading } = useSelector((s) => s.admin);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [loaded, setLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '', dateOfBirth: '', gender: 'male' });
 
   useEffect(() => {
-    const timer = setTimeout(() => { setPage(1); dispatch(fetchAllAdmins({ search, page: 1 })); }, 400);
+    const timer = setTimeout(() => { setPage(1); dispatch(fetchAllAdmins({ search, page: 1 })).then(() => setLoaded(true)); }, 400);
     return () => clearTimeout(timer);
   }, [search, dispatch]);
 
-  useEffect(() => { dispatch(fetchAllAdmins({ search, page })); }, [page, dispatch]);
+  useEffect(() => { dispatch(fetchAllAdmins({ search, page })).then(() => setLoaded(true)); }, [page, dispatch]);
 
   const openCreate = () => { setEditing(null); setForm({ firstName: '', lastName: '', email: '', password: '', phone: '', dateOfBirth: '', gender: 'male' }); setShowModal(true); };
 
@@ -52,6 +53,14 @@ export default function AdminManagement() {
     if (res.meta.requestStatus === 'fulfilled') { toast.success('Admin deleted'); dispatch(fetchAllAdmins({ search, page })); }
     else toast.error(res.payload?.message || 'Delete failed');
   };
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

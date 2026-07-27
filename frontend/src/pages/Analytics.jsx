@@ -8,7 +8,8 @@ const COLORS = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#6366f1'
 
 export default function Analytics() {
   const dispatch = useDispatch();
-  const { analytics, loading } = useSelector((s) => s.admin);
+  const { analytics } = useSelector((s) => s.admin);
+  const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('revenue');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -17,7 +18,7 @@ export default function Analytics() {
     const params = new URLSearchParams();
     if (startDate) params.append('startDate', startDate);
     if (endDate) params.append('endDate', endDate);
-    dispatch(fetchAnalytics(params.toString()));
+    dispatch(fetchAnalytics(params.toString())).then(() => setLoaded(true));
   }, [dispatch, startDate, endDate]);
 
   useEffect(() => { loadAnalytics(); }, [loadAnalytics]);
@@ -27,7 +28,7 @@ export default function Analytics() {
     setEndDate('');
   };
 
-  if (loading && !analytics) {
+  if (!loaded) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />

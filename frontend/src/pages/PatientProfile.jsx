@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateProfile, fetchMe } from '../store/slices/authSlice';
-import { User, Mail, Phone, Calendar, MapPin, Shield, AlertCircle, Stethoscope, Save, X, Check, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Phone, Calendar, MapPin, Shield, AlertCircle, Stethoscope, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const inputClass = "w-full p-2.5 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500 text-sm";
@@ -11,11 +11,15 @@ const sectionClass = "bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
 export default function PatientProfile() {
   const { user, loading } = useSelector((s) => s.auth);
   const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (user) setLoaded(true);
+  }, [user]);
 
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [changed, setChanged] = useState({});
-  const [showFields, setShowFields] = useState({});
 
   useEffect(() => {
     if (user) {
@@ -82,6 +86,14 @@ export default function PatientProfile() {
     }
     setSaving(false);
   };
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
 
   if (!user) return null;
 

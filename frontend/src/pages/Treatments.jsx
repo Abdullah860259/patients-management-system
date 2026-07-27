@@ -15,6 +15,7 @@ export default function Treatments() {
   const { treatments: adminData, loading: adLoading } = useSelector((s) => s.admin);
   const isAdmin = user?.role === 'admin' || user?.role === 'ceo';
   const isCeo = user?.role === 'ceo';
+  const [loaded, setLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -28,9 +29,9 @@ export default function Treatments() {
 
   useEffect(() => {
     if (isAdmin) {
-      dispatch(fetchAllTreatments({ page }));
+      dispatch(fetchAllTreatments({ page })).then(() => setLoaded(true));
     } else {
-      dispatch(fetchTreatments({ page }));
+      dispatch(fetchTreatments({ page })).then(() => setLoaded(true));
     }
   }, [dispatch, page, isAdmin]);
 
@@ -90,6 +91,14 @@ export default function Treatments() {
     }
   };
 
+  if (!loaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
@@ -111,7 +120,7 @@ export default function Treatments() {
 
       {loading ? (
         <div className="min-h-[40vh] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
         </div>
       ) : items?.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
